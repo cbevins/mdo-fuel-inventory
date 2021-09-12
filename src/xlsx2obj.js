@@ -21,17 +21,17 @@ export function addSurvey (rows) {
   const plotMap = new Map()
   rows.forEach((c, idx) => {
     const plot = {
-      objectId: c[0], // survey_0:A 'ObjectID'
+      // objectId: c[0], // survey_0:A 'ObjectID'
       gid: c[1], // survey_0:B 'GlobalID'
       plotNumber: c[2], // survey_0:C 'Plot Number'
-      date: c[3], // survey_0:D 'Date'
-      surveyor: c[4], // survey_0:E 'Surveyor Initials'
+      // date: c[3], // survey_0:D 'Date'
+      // surveyor: c[4], // survey_0:E 'Surveyor Initials'
       speciesName: c[5], // survey_0:F 'Dominant eucalyptus species'
       azimuth: num(c[6]), // survey_0:G 'Azimuth', degrees
-      terrainSlopePct: c[7], // survey_0:H 'Terrain Slope %'
+      terrainSlopePct: num(c[7]), // survey_0:H 'Terrain Slope %'
       aspectCode: c[8], // survey_0:I 'Aspect' alpha code
       elevationFt: num(c[9]), // survey_0:J 'Elevation (ft)'
-      transectSlopePct: c[10], // survey_0:K 'Transect % slope'
+      transectSlopePct: num(c[10]), // survey_0:K 'Transect % slope'
       deadDown: {
         h1: {
           line: num(c[14]), // survey_0:O '1-hr fuels that intersect transect line (0-6)'
@@ -77,9 +77,9 @@ export function addSurvey (rows) {
       },
       shrub: {
         plot1: {
-          liveDeadCoverPct: c[25], // survey_0:Z 'Shrub Percent cover live and dead'
-          deadCoverPct: c[26], // survey_0:AA 'Plot 1Shrub percent cover dead'
-          avgHeight: c[27], // survey_0:AB 'Plot 1 Shrub Average Height'
+          liveDeadCoverPct: num(c[25]), // survey_0:Z 'Shrub Percent cover live and dead' (code)
+          deadCoverPct: num(c[26]), // survey_0:AA 'Plot 1Shrub percent cover dead' (code)
+          avgHeight: num(c[27]), // survey_0:AB 'Plot 1 Shrub Average Height'
           stems: {
             species: [], // Shrub_plot_1_stem_count_6:C 'Shrub Species' (alpha code)
             number: [], // Shrub_plot_1_stem_count_6:D 'Number of Stems' (integer)
@@ -87,9 +87,9 @@ export function addSurvey (rows) {
           }
         },
         plot2: {
-          liveDeadCoverPct: c[28], // survey_0:AC 'Plot 2 Shrub Percent cover live and dead'
-          deadCoverPct: c[29], // survey_0:AD 'Plot 2 Shrub percent cover dead'
-          avgHeight: c[30], // survey_0:AE 'Plot 2 ShrubAverage Height'
+          liveDeadCoverPct: num(c[28]), // survey_0:AC 'Plot 2 Shrub Percent cover live and dead'
+          deadCoverPct: num(c[29]), // survey_0:AD 'Plot 2 Shrub percent cover dead'
+          avgHeight: num(c[30]), // survey_0:AE 'Plot 2 ShrubAverage Height'
           stems: {
             species: [], // Shrub_plot_2_stem_count_7:C 'Shrub Species' (alpha code)
             number: [], // Shrub_plot_2_stem_count_7:D 'Number of Stems' (integer)
@@ -98,30 +98,33 @@ export function addSurvey (rows) {
         }
       },
       liveDeadHerb: {
-        subPlot1: c[31], // survey_0:AF 'Live and Dead Herbaceous subplot 1'
-        subPlot2: c[32], // survey_0:AG 'Live and Dead Herbaceous subplot 2'
-        subPlot3: c[33], // survey_0:AH 'Live and Dead Herbaceous subplot 3'
-        subPlot4: c[34] // survey_0:AI 'Live and Dead Herbaceous subplot 4'
+        subPlot1: num(c[31]), // survey_0:AF 'Live and Dead Herbaceous subplot 1'
+        subPlot2: num(c[32]), // survey_0:AG 'Live and Dead Herbaceous subplot 2'
+        subPlot3: num(c[33]), // survey_0:AH 'Live and Dead Herbaceous subplot 3'
+        subPlot4: num(c[34]) // survey_0:AI 'Live and Dead Herbaceous subplot 4'
       },
       deadHerb: {
-        subPlot1: c[35], // survey_0:AJ 'Dead Herceous subplot 1'
-        subPlot2: c[36], // survey_0:AK 'Dead Herceous subplot 2'
-        subPlot3: c[37], // survey_0:AL 'Dead Herceous subplot 3'
-        subPlot4: c[38] // survey_0:AM 'Dead Herceous subplot 4'
+        subPlot1: num(c[35]), // survey_0:AJ 'Dead Herceous subplot 1'
+        subPlot2: num(c[36]), // survey_0:AK 'Dead Herceous subplot 2'
+        subPlot3: num(c[37]), // survey_0:AL 'Dead Herceous subplot 3'
+        subPlot4: num(c[38]) // survey_0:AM 'Dead Herceous subplot 4'
       },
       herbCoverPct: {
-        subPlot1: c[39], // survey_0:AN 'Percent Cover Herbaceous subplot 1'
-        subPlot2: c[40] // survey_0:AO 'Percent Cover Herbaceous subplot 2'
+        subPlot1: num(c[39]), // survey_0:AN 'Percent Cover Herbaceous subplot 1'
+        subPlot2: num(c[40]) // survey_0:AO 'Percent Cover Herbaceous subplot 2'
       },
-      creationDate: c[41], // survey_0:AP 'Creation Date'
-      creator: c[42], // survey_0:AQ 'Creator'
-      editDate: c[43], // survey_0:AR 'EditDate'
-      editor: c[44], // survey_0:AS 'Editor'
-      notes: c[45], // survey_0:AT 'Notes'
-      x: c[46], // survey_0:AU 'x' (degrees longitude))
-      y: c[47] // survey_0:AV 'y' (degrees latitude)
+      // creationDate: c[41], // survey_0:AP 'Creation Date'
+      // creator: c[42], // survey_0:AQ 'Creator'
+      // editDate: c[43], // survey_0:AR 'EditDate'
+      // editor: c[44], // survey_0:AS 'Editor'
+      notes: c[45] === null ? '' : c[45], // survey_0:AT 'Notes'
+      x: num(c[46]), // survey_0:AU 'x' (degrees longitude))
+      y: num(c[47]) // survey_0:AV 'y' (degrees latitude)
     }
-    if (idx) plotMap.set(plot.gid, plot) // skip header row
+    // skip header row and disturbed plots
+    if (idx && plot.plotNumber !== 9 && plot.plotNumber !== 10) {
+      plotMap.set(plot.gid, plot)
+    }
   })
   return plotMap
 }
@@ -194,7 +197,7 @@ export function addTrees (plotMap, rows) {
       const key = c[5] // F: 'ParentGlobalId'
       if (plotMap.has(key)) {
         const plot = plotMap.get(key)
-        plot.trees.species.push(num(c[2])) // small_trees_5:C 'Species'
+        plot.trees.species.push(c[2]) // small_trees_5:C 'Species'
         plot.trees.number.push(num(c[3])) // small_trees_5:D 'Number'
         plot.trees.avgHeight.push(num(c[4])) // small_trees_5:E 'Average Height (ft)'
       } else {
@@ -215,9 +218,9 @@ export function addShrubs (plotMap, rows, prop) {
       if (plotMap.has(key)) {
         const plot = plotMap.get(key)
         const shrub = plot.shrub[prop].stems
-        shrub.species.push(num(c[2])) // Shrub_plot_1_stem_count_6:C 'Shrub Species' (alpha code)
+        shrub.species.push(c[2]) // Shrub_plot_1_stem_count_6:C 'Shrub Species' (alpha code)
         shrub.number.push(num(c[3])) // Shrub_plot_1_stem_count_6:D 'Number of Stems' (integer)
-        shrub.sizeClass.push(num(c[4])) // Shrub_plot_1_stem_count_6:E 'Size class' (number range)
+        shrub.sizeClass.push(c[4]) // Shrub_plot_1_stem_count_6:E 'Size class' (number range)
       } else {
         throw Error(`Shrub_${prop}_stem_count row ${idx} ParentGlobalID ${key} not found`)
       }

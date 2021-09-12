@@ -1,5 +1,6 @@
 import readXlsxFile from 'read-excel-file/node/index.commonjs.js'
 import { addSurvey, addPlanar, addSound, addRotten, addBark, addTrees, addShrubs1, addShrubs2 } from './xlsx2obj.js'
+import fs from 'fs'
 
 const modXlsxFileName = '../data/MasterDataSheetFuelInventory.xlsx'
 
@@ -30,14 +31,20 @@ async function createPlotMap (fileName) {
   addBark(plotMap, bark)
   addTrees(plotMap, trees)
   addShrubs1(plotMap, shrubs1)
-  addShrubs1(plotMap, shrubs2)
+  addShrubs2(plotMap, shrubs2)
   return plotMap
 }
 
 function displayPlotMap (plotMap) {
+  let str = 'export const modFuelInv = [\n'
   Array.from(plotMap.values()).forEach(plot => {
-    console.log(plot)
+    str += JSON.stringify(plot, null, 2)
+    str += ',\n'
   })
+  str += ']\n'
+  // console.log(str)
+  fs.writeFileSync('json.js', str)
 }
 
-createPlotMap(modXlsxFileName).then(displayPlotMap)
+createPlotMap(modXlsxFileName)
+  .then(displayPlotMap)
