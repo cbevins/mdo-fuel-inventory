@@ -1,3 +1,7 @@
+/**
+ * Driver program that reads the MasterDataSheetFuelInventory.xlsx
+ * and converts it into an array of Javascript MOD plot data in modPlotData.js.
+ */
 import readXlsxFile from 'read-excel-file/node/index.commonjs.js'
 import {
   addSurvey, addPlanar, addSound, addRotten, addBark, addTrees, addShrubs1, addShrubs2,
@@ -5,7 +9,9 @@ import {
 } from './xlsx2obj.js'
 import fs from 'fs'
 
-const modXlsxFileName = '../data/MasterDataSheetFuelInventory.xlsx'
+const inputFile = '../data/MasterDataSheetFuelInventory.xlsx'
+const outputJsFile = './modPlotData.js'
+const outputJsonFile = './modPlotData.json'
 
 async function createPlotMap (fileName) {
   const [survey, planar, sound, rotten, bark, trees, shrubs1, shrubs2] = await Promise.all([
@@ -39,19 +45,22 @@ async function createPlotMap (fileName) {
 }
 
 function displayPlotMap (plotMap) {
-  let str = 'export const modFuelInv = [\n'
+  let str = '[\n'
   Array.from(plotMap.values()).forEach(plot => {
     str += JSON.stringify(plot, null, 2)
     str += ',\n'
   })
   str += ']\n'
   // console.log(str)
-  fs.writeFileSync('json.js', str)
+  fs.writeFileSync(outputJsonFile, str)
+  str = 'export const modPlotData = ' + str
+  fs.writeFileSync(outputJsFile, str)
+
   console.log(`There are ${plotMap.size} valid plots`)
   console.log('Overstory Species:', overstoryMap)
   console.log('Shrub Species:', shrubMap)
   console.log('Tree Species:', treeMap)
 }
 
-createPlotMap(modXlsxFileName)
+createPlotMap(inputFile)
   .then(displayPlotMap)

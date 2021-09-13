@@ -1,4 +1,4 @@
-export const modFuelInv = [
+[
 {
   "gid": "0e51f516-5713-407e-b895-25a0b496a98c",
   "plotNumber": 72,
@@ -8642,5 +8642,5 @@ export const modFuelInv = [
   "notes": "",
   "x": -120.87284350779,
   "y": 35.2903135540292
-},
+}
 ]
