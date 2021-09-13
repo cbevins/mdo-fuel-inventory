@@ -1,5 +1,8 @@
 import readXlsxFile from 'read-excel-file/node/index.commonjs.js'
-import { addSurvey, addPlanar, addSound, addRotten, addBark, addTrees, addShrubs1, addShrubs2 } from './xlsx2obj.js'
+import {
+  addSurvey, addPlanar, addSound, addRotten, addBark, addTrees, addShrubs1, addShrubs2,
+  overstoryMap, shrubMap, treeMap
+} from './xlsx2obj.js'
 import fs from 'fs'
 
 const modXlsxFileName = '../data/MasterDataSheetFuelInventory.xlsx'
@@ -13,7 +16,7 @@ async function createPlotMap (fileName) {
     readXlsxFile(fileName, { sheet: 5 }),
     readXlsxFile(fileName, { sheet: 6 }),
     readXlsxFile(fileName, { sheet: 7 }),
-    readXlsxFile(fileName, { sheet: 7 })
+    readXlsxFile(fileName, { sheet: 8 })
   ])
   // The following list the column headers from row 0 of each worksheet
   // console.log('survey', survey[0])
@@ -44,6 +47,10 @@ function displayPlotMap (plotMap) {
   str += ']\n'
   // console.log(str)
   fs.writeFileSync('json.js', str)
+  console.log(`There are ${plotMap.size} valid plots`)
+  console.log('Overstory Species:', overstoryMap)
+  console.log('Shrub Species:', shrubMap)
+  console.log('Tree Species:', treeMap)
 }
 
 createPlotMap(modXlsxFileName)

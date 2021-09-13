@@ -10,7 +10,7 @@ const bundle = `${dist}/${packageName}`
 
 export default [
   {
-    input: 'src/index.js',
+    input: 'src/runMod.js',
     output: [
       {
         file: `${bundle}.esm.js`,

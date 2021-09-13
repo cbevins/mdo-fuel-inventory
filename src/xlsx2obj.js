@@ -15,8 +15,18 @@
  * where each row is an array of cell values.
  * @returns
  */
+
+export const shrubMap = new Map()
+export const overstoryMap = new Map()
+export const treeMap = new Map()
+
 function num (n) { return n === null ? 0 : +n }
 
+/**
+ * Creates the plotMap and initializes it with 'survey_0' worksheet data
+ * @param {array} rows  Array of survey_0 spreadsheet rows as returned by readXlsxFile(),
+ * @returns {Map} Newly created Javascript Map of plot GlobalID => plotObject
+ */
 export function addSurvey (rows) {
   const plotMap = new Map()
   rows.forEach((c, idx) => {
@@ -26,7 +36,7 @@ export function addSurvey (rows) {
       plotNumber: c[2], // survey_0:C 'Plot Number'
       // date: c[3], // survey_0:D 'Date'
       // surveyor: c[4], // survey_0:E 'Surveyor Initials'
-      speciesName: c[5], // survey_0:F 'Dominant eucalyptus species'
+      speciesName: c[5] === null ? 'NONE' : c[5], // survey_0:F 'Dominant eucalyptus species'
       azimuth: num(c[6]), // survey_0:G 'Azimuth', degrees
       terrainSlopePct: num(c[7]), // survey_0:H 'Terrain Slope %'
       aspectCode: c[8], // survey_0:I 'Aspect' alpha code
@@ -121,9 +131,13 @@ export function addSurvey (rows) {
       x: num(c[46]), // survey_0:AU 'x' (degrees longitude))
       y: num(c[47]) // survey_0:AV 'y' (degrees latitude)
     }
-    // skip header row and disturbed plots
+    // skip header row and disturbed/managed plots
     if (idx && plot.plotNumber !== 9 && plot.plotNumber !== 10) {
       plotMap.set(plot.gid, plot)
+      // Generate a list of overstory species counts
+      if (!overstoryMap.has(plot.speciesName)) overstoryMap.set(plot.speciesName, 0)
+      const n = overstoryMap.get(plot.speciesName)
+      overstoryMap.set(plot.speciesName, n + 1)
     }
   })
   return plotMap
@@ -197,9 +211,14 @@ export function addTrees (plotMap, rows) {
       const key = c[5] // F: 'ParentGlobalId'
       if (plotMap.has(key)) {
         const plot = plotMap.get(key)
-        plot.trees.species.push(c[2]) // small_trees_5:C 'Species'
+        const spp = c[2].toUpperCase() // small_trees_5:C 'Species'
+        plot.trees.species.push(spp)
         plot.trees.number.push(num(c[3])) // small_trees_5:D 'Number'
         plot.trees.avgHeight.push(num(c[4])) // small_trees_5:E 'Average Height (ft)'
+        // Generate a list of small tree species counts
+        if (!treeMap.has(spp)) treeMap.set(spp, 0)
+        const n = treeMap.get(spp)
+        treeMap.set(spp, n + 1)
       } else {
         throw Error(`small_trees_5 row ${idx} ParentGlobalID ${key} not found`)
       }
@@ -218,9 +237,14 @@ export function addShrubs (plotMap, rows, prop) {
       if (plotMap.has(key)) {
         const plot = plotMap.get(key)
         const shrub = plot.shrub[prop].stems
-        shrub.species.push(c[2]) // Shrub_plot_1_stem_count_6:C 'Shrub Species' (alpha code)
+        const spp = c[2].toUpperCase() // Shrub_plot_1_stem_count_6:C 'Shrub Species' (alpha code)
+        shrub.species.push(spp)
         shrub.number.push(num(c[3])) // Shrub_plot_1_stem_count_6:D 'Number of Stems' (integer)
         shrub.sizeClass.push(c[4]) // Shrub_plot_1_stem_count_6:E 'Size class' (number range)
+        // Generate a list of shrub species counts
+        if (!shrubMap.has(spp)) shrubMap.set(spp, 0)
+        const n = shrubMap.get(spp)
+        shrubMap.set(spp, n + 1)
       } else {
         throw Error(`Shrub_${prop}_stem_count row ${idx} ParentGlobalID ${key} not found`)
       }
