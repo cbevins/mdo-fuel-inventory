@@ -1,5 +1,12 @@
-// Shrub weights (gm) by stem basal diameter class
+/**
+ * Functions to calculate fuel loads from MOD fuel plot data
+ * NOTE: Many of the required parameter values are not yet available
+ */
+
+// DUMMY Shrub weights (gm) by stem basal diameter class
+// \TODO Get actual values
 export const shrubWts = {
+  // These are all the shrub species codes recorded in the MOD fuel inventory
   // 0=0-0.5, 1=05.01, 2=1-1.5, 3=1.5-2, 4=2-3, 5=3-5, 6=5-6 cm
   TODI: [1, 2, 3, 4, 5, 6, 7], // 51 occurrences
   UNKNOWN: [1, 2, 3, 4, 5, 6, 7], // 1,
@@ -15,6 +22,7 @@ export const shrubWts = {
   FRCA: [1, 2, 3, 4, 5, 6, 7], // 2,
   'TODI;RUUR': [1, 2, 3, 4, 5, 6, 7], // 1
 
+  // Here are some representative values from Brown, Oberheu, and Johnston (1982) table 3
   // Low shrubs
   'Blue Huckleberry': [1.0, 12.0, 59.8, 173.0, 531.0, 0, 0],
   'White spirea': [2.2, 17.4, 65.7, 158.0, 399, 0, 0],
@@ -30,7 +38,9 @@ export const shrubWts = {
 
 // Small tree weights (pounds) by 1-ft height increments
 export const treeWts = {
+  // NOTE: OAK is the only small tree recorded on 2 plots in the MOD fuel inventory
   OAK: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], // 2
+  // Here are all the values from Brown, Oberheu, and Johnston (1982) table 4
   DF: [0.03, 0.20, 0.56, 1.18, 2.09, 3.33, 4.94, 6.95, 9.39],
   PP: [0.03, 0.20, 0.56, 1.18, 2.09, 3.33, 4.94, 6.95, 9.39],
   S: [0.03, 0.20, 0.56, 1.18, 2.09, 3.33, 4.94, 6.95, 9.39],
@@ -47,6 +57,8 @@ export const treeWts = {
   WH: [0.01, 0.05, 0.16, 0.35, 0.64, 1.05, 1.60, 2.31, 3.18, 4.24]
 }
 
+// Calculates transect slope correction factor
+// per Brown, Oberheu, and Johnston (1982) equation (6)
 export function slopeFactor (slopePercent) {
   const s = 0.01 * slopePercent
   return Math.sqrt(1 + s * s)
@@ -54,12 +66,15 @@ export function slopeFactor (slopePercent) {
 
 /**
  * Calculates the lbs/acre for 1-h, 10-h, or 100-h dead and down fuels
- * per Brown, Oberheu, and Johnston (1982)
+ * for mixed coniferous forests of the intermountain west
+ * per Brown, Oberheu, and Johnston (1982) equations (1), (2), and (3),
+ * and may not be representative of coastal eucalyptus species.
  * @param {number} intersections Total number of fuel particle intersections
  * @param {number} planarLength Total sample plane length for the above intersection count (ft)
  * @param {number} planarSlope Slope of the transect plane (%)
  * @returns {number} Pounds per acre
  */
+
 export function load1h (intersections, planarLength, planarSlope) {
   return 190.7 * intersections * slopeFactor(planarSlope) / planarLength
 }
@@ -74,8 +89,10 @@ export function load100h (intersections, planarLength, planarSlope) {
 
 /**
  * Calculates the lbs/acre for 1000-h rotten and sound dead and down fuels
- * per Brown, Oberheu, and Johnston (1982)
- * @param {number} sunmDiam2 Sum of squared diameters of all 1000-h fuel particle intersections (in2)
+ * for mixed coniferous forests of the intermountain west
+ * per Brown, Oberheu, and Johnston (1982) equations (4) and (5),
+ * and may not be representative of coastal eucalyptus species.
+ * @param {number} sumDiam2 Sum of squared diameters of all 1000-h fuel particle intersections (in2)
  * @param {number} planarLength Total sample plane length for the above intersection count (ft)
  * @param {number} planarSlope Slope of the transect plane (%)
  * @returns {number} Pounds per acre

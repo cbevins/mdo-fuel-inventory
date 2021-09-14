@@ -160,6 +160,8 @@ export function addPlanar (plotMap, rows) {
 }
 
 export function addSound (plotMap, rows) {
+  let sum = 0
+  let n = 0
   rows.forEach((c, idx) => {
     if (idx) { // skip header record
       const key = c[3] // D: 'ParentGlobalId'
@@ -167,14 +169,19 @@ export function addSound (plotMap, rows) {
         const plot = plotMap.get(key)
         // sound_diameters_2:C 'All fuel diameters >3" round to nearest .25 inch. (i.e. .25, .5 .75)'
         plot.deadDown.h1000.soundDiam.push(num(c[2]))
+        sum += num(c[2])
+        n++
       } else {
         throw Error(`sound_diameters_2 row ${idx} ParentGlobalID ${key} not found`)
       }
     }
   })
+  console.log(`Sound 1000-h avg diam = ${sum / n} (n=${n})`)
 }
 
 export function addRotten (plotMap, rows) {
+  let sum = 0
+  let n = 0
   rows.forEach((c, idx) => {
     if (idx) { // skip header record
       const key = c[3] // D: 'ParentGlobalId'
@@ -182,11 +189,14 @@ export function addRotten (plotMap, rows) {
         const plot = plotMap.get(key)
         // sound_diameters_2:C 'All fuel diameters >3" round to nearest .25 inch. (i.e. .25, .5 .75)'
         plot.deadDown.h1000.rottenDiam.push(num(c[2]))
+        sum += num(c[2])
+        n++
       } else {
         throw Error(`rotten_diameters_3 row ${idx} ParentGlobalID ${key} not found`)
       }
     }
   })
+  console.log(`Rotten 1000-h avg diam = ${sum / n} (n=${n})`)
 }
 
 export function addBark (plotMap, rows) {
