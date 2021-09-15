@@ -75,14 +75,26 @@ export function slopeFactor (slopePercent) {
  * @returns {number} Pounds per acre
  */
 
+// t/ac = 11.64 * diamSq * specGrav * nonHorzCorrection * intersections / length
+// t/ac = 11.64 * 0.0151 * 0.48 * 1.13 * intersections / length
+// t/ac = 0.095334 * intersections / length
+// lb/ac = 190.6688 * intersections / length
 export function load1h (intersections, planarLength, planarSlope) {
   return 190.7 * intersections * slopeFactor(planarSlope) / planarLength
 }
 
+// t/ac = 11.64 * diamSq * specGrav * nonHorzCorrection * intersections / length
+// t/ac = 11.64 * 0.289 * 0.48 * 1.13 * intersections / length
+// t/ac = 1.824612 * intersections / length
+// lb/ac = 3649.22 * intersections / length
 export function load10h (intersections, planarLength, planarSlope) {
   return 3650 * intersections * slopeFactor(planarSlope) / planarLength
 }
 
+// t/ac = 11.64 * diamSq * specGrav * nonHorzCorrection * intersections / length
+// t/ac = 11.64 * 2.76 * 0.40 * 1.13 * intersections / length
+// t/ac = 14.5211328 * intersections / length
+// lb/ac = 29042.25 * intersections / length
 export function load100h (intersections, planarLength, planarSlope) {
   return 29040 * intersections * slopeFactor(planarSlope) / planarLength
 }

@@ -1,5 +1,5 @@
-import { modPlotData } from './modPlotData.js'
-import { load1h, load10h, load100h, loadSound, loadRotten } from './modFuelProcessor.js'
+import { mdoPlotData } from './mdoPlotData.js'
+import { load1h, load10h, load100h, loadSound, loadRotten } from './mdoFuelProcessor.js'
 
 // Transect lengths
 const length1 = 6
@@ -46,4 +46,4 @@ function processLoads (plots) {
   console.log(csv)
 }
 
-processLoads(modPlotData)
+processLoads(mdoPlotData)

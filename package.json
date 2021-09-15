@@ -68,6 +68,8 @@
   "devDependencies": {
     "@babel/core": "7.15.5",
     "@babel/preset-env": "7.15.6",
+    "@rollup/plugin-babel": "5.3.0",
+    "@rollup/plugin-commonjs": "20.0.0",
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-node-resolve": "13.0.4",
     "@rollup/pluginutils": "4.1.1",
@@ -84,7 +86,6 @@
     "rollup-plugin-uglify": "6.0.4"
   },
   "dependencies": {
-    "@rollup/plugin-babel": "5.3.0",
     "exceljs": "4.3.0",
     "read-excel-file": "5.2.9",
     "regenerator-runtime": "0.13.9"

@@ -1,3 +1,4 @@
+import commonjs from '@rollup/plugin-commonjs'
 import { babel, getBabelOutputPlugin } from '@rollup/plugin-babel'
 import resolve from '@rollup/plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
@@ -14,12 +15,13 @@ export default [
     output: [
       {
         file: `${bundle}.esm.js`,
-        format: 'esm'
+        format: 'esm',
+        plugins: [commonjs()]
       },
       {
         file: `${bundle}.esm.min.js`,
         format: 'esm',
-        plugins: [terser()]
+        plugins: [commonjs(), terser()]
       },
       {
         file: `${bundle}.es5.js`,

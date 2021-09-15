@@ -9,9 +9,9 @@ import {
 } from './xlsx2obj.js'
 import fs from 'fs'
 
-const inputFile = '../data/MasterDataSheetFuelInventory.xlsx'
-const outputJsFile = './modPlotData.js'
-const outputJsonFile = './modPlotData.json'
+const inputFile = './MasterDataSheetFuelInventory.xlsx'
+const outputJsFile = './mdoPlotData.js'
+// const outputJsonFile = './mdoPlotData.json'
 
 async function createPlotMap (fileName) {
   const [survey, planar, sound, rotten, bark, trees, shrubs1, shrubs2] = await Promise.all([
@@ -52,8 +52,8 @@ function displayPlotMap (plotMap) {
   })
   str += ']\n'
   // console.log(str)
-  fs.writeFileSync(outputJsonFile, str)
-  str = 'export const modPlotData = ' + str
+  // fs.writeFileSync(outputJsonFile, str)
+  str = 'export const mdoPlotData = ' + str
   fs.writeFileSync(outputJsFile, str)
 
   console.log(`There are ${plotMap.size} valid plots`)

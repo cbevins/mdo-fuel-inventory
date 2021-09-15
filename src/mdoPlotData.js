@@ -1,4 +1,4 @@
-export const modPlotData = [
+export const mdoPlotData = [
   {
     gid: '0e51f516-5713-407e-b895-25a0b496a98c',
     plotNumber: 72,
